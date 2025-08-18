@@ -1,0 +1,20 @@
+name: C++ Build with clang++
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install clang
+      run: sudo apt-get update && sudo apt-get install -y clang
+
+    - name: Compile with clang++
+      run: clang++ -std=c++17 -Wall -Wextra -o main main.cpp
+
+    - name: Run program
+      run: ./main
