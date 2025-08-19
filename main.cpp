@@ -1,4 +1,7 @@
+
 #include<iostream>
 int main(){
-	std::cout<<"Helloworld";
+	int x;
+       std::cin>>x;
+      std::cout<<"xxxx";
 }
