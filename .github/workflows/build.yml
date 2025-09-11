@@ -1,26 +1,30 @@
-name: C++ Build and Run
+name: Build JNI Library
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Install g++
-        run: sudo apt-get update && sudo apt-get install -y g++
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y openjdk-11-jdk cmake g++
 
-      - name: Compile program
-        run: g++ main.cpp -o main
+    - name: Configure CMake
+      run: cmake -S . -B build
 
-      - name: Run program
-        run: ./main
+    - name: Build JNI library
+      run: cmake --build build
+
+    - name: Upload .so artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: so file
+        path: build/libnative-lib.so
