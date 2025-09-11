@@ -22,9 +22,9 @@ jobs:
 
     - name: Build JNI library
       run: cmake --build build
-
+                                         
     - name: Upload .so artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: so file
         path: build/libnative-lib.so
