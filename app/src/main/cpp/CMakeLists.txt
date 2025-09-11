@@ -8,13 +8,7 @@ project(HelloWorldApp)
 add_library(
     native-lib
     SHARED
-       app/src/main/cpp/native-lib.cpp      
-
-)
-
-find_library(
-    log-lib
-    log
+       native-lib.cpp
 )
 
 target_link_libraries(
