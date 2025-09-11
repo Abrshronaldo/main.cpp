@@ -18,7 +18,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y openjdk-11-jdk cmake g++
 
     - name: Configure CMake
-      run: cmake -S . -B build
+      run: cmake -S app/src/main/cpp -B build
 
     - name: Build JNI library
       run: cmake --build build
@@ -27,4 +27,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: so file
-        path: build/libnative-lib.so
+        path: path: build/**/*.so
+
