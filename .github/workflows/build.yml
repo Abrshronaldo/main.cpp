@@ -21,7 +21,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y openjdk-11-jdk cmake
-
+    - name: Install Android NDK
+      run: sudo apt-get install -y android-sdk ndk
+     
     - name: Set up environment variables
       run: |
         echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))" >> $GITHUB_ENV
@@ -30,8 +32,11 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cmake -S app/src/main/cpp -B build 
-
+        cmake -S app/src/main/cpp -B build \
+          -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
+          -DANDROID_ABI=armeabi-v7a \
+          -DANDROID_PLATFORM=android-21
+    
     - name: Build JNI library
       run: cmake --build build --verbose
 
