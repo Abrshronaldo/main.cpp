@@ -16,10 +16,8 @@ add_library(
 
 # Locate log library
 find_library(log-lib log)
-
-# Include JNI headers
-include_directories(${CMAKE_SYSROOT}/usr/include)
-include_directories(${CMAKE_SYSROOT}/usr/include/jni)
+find_package(JNI REQUIRED)
+include_directories(${JNI_INCLUDE_DIRS})
 
 # Link libraries
 target_link_libraries(
