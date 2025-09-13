@@ -30,9 +30,7 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cmake -S app/src/main/cpp -B build \
-          -DJNI_INCLUDE_DIR=$JNI_INCLUDE_DIR \
-          -DJNI_INCLUDE_DIR2=$JNI_INCLUDE_DIR2
+        cmake -S app/src/main/cpp -B build 
 
     - name: Build JNI library
       run: cmake --build build --verbose
