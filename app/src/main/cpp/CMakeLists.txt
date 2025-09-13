@@ -4,9 +4,8 @@
 cmake_minimum_required(VERSION 3.18)
 project(HelloWorldApp)
 
-# Set output directory
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/libs/${ANDROID_ABI})
-
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI})
+       
 # Define the shared library
 add_library(
     native-lib
