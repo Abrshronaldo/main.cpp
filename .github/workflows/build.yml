@@ -21,9 +21,19 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y openjdk-11-jdk cmake
-    - name: Install Android NDK
-      run: sudo apt-get install -y android-sdk ndk
-     
+    - name: Install Android SDK Command-line Tools
+      run: |
+        mkdir -p $HOME/android-sdk/cmdline-tools
+        cd $HOME/android-sdk/cmdline-tools
+        curl -O https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+        unzip commandlinetools-linux-*.zip
+        mkdir latest
+        mv cmdline-tools/* latest/
+        export ANDROID_HOME=$HOME/android-sdk
+        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+        yes | sdkmanager --licenses
+        sdkmanager "ndk;25.2.9519653" "platforms;android-21" "build-tools;34.0.0"
+   
     - name: Set up environment variables
       run: |
         echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))" >> $GITHUB_ENV
