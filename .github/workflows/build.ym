@@ -1,0 +1,50 @@
+
+
+
+name: Build JNI Library
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y openjdk-11-jdk cmake
+
+    - name: Set up environment variables
+      run: |
+        echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))" >> $GITHUB_ENV
+        echo "JNI_INCLUDE_DIR=$JAVA_HOME/include" >> $GITHUB_ENV
+        echo "JNI_INCLUDE_DIR2=$JAVA_HOME/include/linux" >> $GITHUB_ENV
+
+    - name: Configure CMake
+      run: |
+        cmake -S app/src/main/cpp -B build \
+          -DJNI_INCLUDE_DIR=$JNI_INCLUDE_DIR \
+          -DJNI_INCLUDE_DIR2=$JNI_INCLUDE_DIR2
+
+    - name: Build JNI library
+      run: cmake --build build --verbose
+
+    - name: Set permissions on .so file
+      run: |
+           find build -name "*.so" -exec chmod 066 {} \;
+      
+
+    - name: Upload .so artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: native-lib
+        path: build/**/*.so
+
