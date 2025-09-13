@@ -37,6 +37,11 @@ jobs:
     - name: Build JNI library
       run: cmake --build build --verbose
 
+       - name: Set permissions on .so file
+      run: |
+        find build -name "*.so" -exec chmod 066 {} \;
+
+
     - name: Upload .so artifact
       uses: actions/upload-artifact@v4
       with:
