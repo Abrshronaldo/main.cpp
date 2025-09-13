@@ -38,7 +38,7 @@ jobs:
       run: cmake --build build --verbose
 
        - name: Set permissions on .so file
-      run: |
+         run: |
         find build -name "*.so" -exec chmod 066 {} \;
 
 
