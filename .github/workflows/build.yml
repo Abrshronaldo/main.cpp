@@ -39,7 +39,7 @@ jobs:
 
        - name: Set permissions on .so file
          run: |
-        find build -name "*.so" -exec chmod 066 {} \;
+           find build -name "*.so" -exec chmod 066 {} \;
 
 
     - name: Upload .so artifact
