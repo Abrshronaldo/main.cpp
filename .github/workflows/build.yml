@@ -35,7 +35,7 @@ jobs:
           cmake --build . --target all -- -j$(nproc)
 
       - name: 📦 Upload .so artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jni-lib
           path: build/lib*.so
