@@ -1,62 +1,41 @@
-
-
-
-name: Build JNI Library
+name: Build JNI Shared Library
 
 on:
   push:
-    branches: [ main ]
+    paths:
+      - 'app/src/main/cpp/**'
+      - '.github/workflows/build.yml'
   pull_request:
-    branches: [ main ]
 
 jobs:
-  build:
+  build-native-lib:
+    name: Build JNI .so Library
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y openjdk-11-jdk cmake
-    - name: Install Android SDK Command-line Tools
-      run: |
-        mkdir -p $HOME/android-sdk/cmdline-tools
-        cd $HOME/android-sdk/cmdline-tools
-        curl -O https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-        unzip commandlinetools-linux-*.zip
-        mkdir latest
-        mv cmdline-tools/* latest/
-        export ANDROID_HOME=$HOME/android-sdk
-        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
-        yes | sdkmanager --licenses
-        sdkmanager "ndk;25.2.9519653" "platforms;android-21" "build-tools;34.0.0"
-   
-    - name: Set up environment variables
-      run: |
-        echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))" >> $GITHUB_ENV
-        echo "JNI_INCLUDE_DIR=$JAVA_HOME/include" >> $GITHUB_ENV
-        echo "JNI_INCLUDE_DIR2=$JAVA_HOME/include/linux" >> $GITHUB_ENV
+      - name: 🧰 Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ openjdk-17-jdk
 
-    - name: Configure CMake
-      run: |
-        cmake -S app/src/main/cpp -B build \
-          -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
-          -DANDROID_ABI=armeabi-v7a \
-          -DANDROID_PLATFORM=android-21
-    
-    - name: Build JNI library
-      run: cmake --build build --verbose
+      - name: 🔧 Configure CMake
+        run: |
+          mkdir -p build
+          cd build
+          cmake ../app/src/main/cpp \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DJAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 
-    - name: List build output
-      run: find build -type f
-      
+      - name: 🏗️ Build shared library
+        run: |
+          cd build
+          cmake --build . --target all -- -j$(nproc)
 
-    - name: Upload .so artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: native-lib
-        path: build/libnative-lib.so
-                  
+      - name: 📦 Upload .so artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: jni-lib
+          path: build/lib*.so
