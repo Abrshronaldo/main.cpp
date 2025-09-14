@@ -33,7 +33,10 @@ jobs:
         run: |
           cd build
           cmake --build . --target all -- -j$(nproc)
-
+      - name: 🛡️ Set permissions to 666 for .so file
+        run: |
+          chmod 666 build/lib*.so
+         
       - name: 📦 Upload .so artifact
         uses: actions/upload-artifact@v4
         with:
