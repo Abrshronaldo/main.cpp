@@ -19,16 +19,14 @@ jobs:
       - name: 🧰 Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake g++ openjdk-17-jdk
-
+          sudo apt-get install -y cmake g++ 
       - name: 🔧 Configure CMake
         run: |
           mkdir -p build
           cd build
           cmake ../app/src/main/cpp \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DJAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-
+            -DCMAKE_BUILD_TYPE=Release 
+                                                            
       - name: 🏗️ Build shared library
         run: |
           cd build
