@@ -1,4 +1,10 @@
-name: Build JNI Shared Library
+
+
+
+
+
+
+name: Build JNI Shared Library for Android
 
 on:
   push:
@@ -9,29 +15,39 @@ on:
 
 jobs:
   build-native-lib:
-    name: Build JNI .so Library
+    name: Build JNI .so Library (Android)
     runs-on: ubuntu-latest
 
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      - name: 🧰 Install dependencies
+      - name: 📦 Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake g++ 
-      - name: 🔧 Configure CMake
+          sudo apt-get install -y cmake unzip wget
+
+      - name: 📥 Download Android NDK
+        run: |
+          wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip
+          unzip android-ndk-r25c-linux.zip
+          echo "ANDROID_NDK=$(pwd)/android-ndk-r25c" >> $GITHUB_ENV
+
+      - name: 🔧 Configure CMake for Android
         run: |
           mkdir -p build
           cd build
           cmake ../app/src/main/cpp \
-            -DCMAKE_BUILD_TYPE=Release 
-                                                            
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=${{ env.ANDROID_NDK }}/build/cmake/android.toolchain.cmake \
+            -DANDROID_ABI=armeabi-v7a \
+            -DANDROID_PLATFORM=android-21
+
       - name: 🏗️ Build shared library
         run: |
           cd build
           cmake --build . --target all -- -j$(nproc)
-               
+
       - name: 📦 Upload .so artifact
         uses: actions/upload-artifact@v4
         with:
