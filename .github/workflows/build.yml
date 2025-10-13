@@ -70,19 +70,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gh
-
-      - name: 🔑 Authenticate GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh auth login --with-token <<< "${GH_TOKEN}"
-
       - name: 📝 Create or update release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME=${{ github.ref_name }}
           RELEASE_NAME="JNI Library Release - $TAG_NAME"
+          gh release create "$TAG_NAME" \
+            --title "$RELEASE_NAME" \
+            --notes "Automated release for $TAG_NAME"
+
+
 
           gh release upload "$TAG_NAME" release-assets/build/lib*.so --clobber
 
