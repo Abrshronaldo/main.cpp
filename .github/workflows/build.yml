@@ -79,9 +79,6 @@ jobs:
           gh release create "$TAG_NAME" \
             --title "$RELEASE_NAME" \
             --notes "Automated release for $TAG_NAME"
-
-
-
           gh release upload "$TAG_NAME" release-assets/build/lib*.so --clobber
 
           
