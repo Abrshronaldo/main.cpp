@@ -8,10 +8,9 @@ name: Build JNI Shared Library for Android
 
 on:
   push:
-    paths:
-      - 'app/src/main/cpp/**'
-      - '.github/workflows/build.yml'
-  pull_request:
+    tags:
+      - '*'
+
 
 jobs:
   build-native-lib:
@@ -66,8 +65,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: jni-lib
-          path: release-assets
-
+          path: release-assets/build
       - name: 🔧 Set up GitHub CLI
         run: |
           sudo apt-get update
@@ -77,7 +75,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh auth setup-git
+          gh auth login --with-token <<< "${GH_TOKEN}"
 
       - name: 📝 Create or update release
         env:
@@ -85,7 +83,8 @@ jobs:
         run: |
           TAG_NAME=${{ github.ref_name }}
           RELEASE_NAME="JNI Library Release - $TAG_NAME"
-          gh release create "$TAG_NAME" release-assets/* \
+          gh release create "$TAG_NAME" release-assets/** \
             --title "$RELEASE_NAME" \
             --notes "Automated release of JNI shared library for Android."
 
+                                                       
