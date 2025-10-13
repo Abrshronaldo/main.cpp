@@ -17,7 +17,7 @@ jobs:
   build-native-lib:
     name: Build JNI .so Library (Android)
     runs-on: ubuntu-latest
-
+  
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
@@ -53,12 +53,12 @@ jobs:
         with:
           name: jni-lib
           path: build/lib*.so
-       upload-to-release:
-    name: 📤 Upload Artifact to GitHub Release
-    needs: build-native-lib
-    runs-on: ubuntu-latest
+   upload-to-release:
+     name: 📤 Upload Artifact to GitHub Release
+     needs: build-native-lib
+     runs-on: ubuntu-latest
 
-    steps:
+     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
