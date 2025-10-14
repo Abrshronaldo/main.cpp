@@ -7,7 +7,7 @@
 
 extern "C"
   JNIEXPORT jstring JNICALL
-stringFromJNI(JNIEnv* env, jobject /* this */) {
+Java_M_stringFromJNI(JNIEnv* env, jobject /* this */) {
     return env->NewStringUTF("Hello from C++");
 }
                                                  
