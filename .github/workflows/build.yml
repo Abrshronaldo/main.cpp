@@ -43,7 +43,7 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=${{ env.ANDROID_NDK }}/build/cmake/android.toolchain.cmake \
             -DANDROID_ABI=armeabi-v7a \
             -DANDROID_PLATFORM=android-21
-
+            -DANDROID_STL=c++_shared
       - name: 🏗️ Build shared library
         run: |
           cd build
