@@ -15,7 +15,7 @@ extern "C"
 
 char board[3][3];
 char currentPlayer = 'X';
-
+            
 void initializeBoard() {
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
@@ -23,17 +23,17 @@ void initializeBoard() {
 }
 
 void printBoard() {
-    cout << "\n";
+    std::cout << "\n";
     for (int i = 0; i < 3; ++i) {
-        cout << " ";
+       std::cout << " ";
         for (int j = 0; j < 3; ++j) {
-            cout << board[i][j];
-            if (j < 2) cout << " | ";
+            std::cout << board[i][j];
+            if (j < 2) std::cout << " | ";
         }
-        cout << "\n";
-        if (i < 2) cout << "---+---+---\n";
+        std::cout << "\n";
+        if (i < 2) std::cout << "---+---+---\n";
     }
-    cout << "\n";
+    std::cout << "\n";
 }
 
 bool isWin() {
@@ -79,11 +79,11 @@ void playGame() {
     initializeBoard();
     while (true) {
         printBoard();
-        cout << "Player " << currentPlayer << ", enter row and column (0-2): ";
-        cin >> row >> col;
+        std::cout << "Player " << currentPlayer << ", enter row and column (0-2): ";
+        std::cin >> row >> col;
 
         if (row < 0 || row > 2 || col < 0 || col > 2 || board[row][col] != ' ') {
-            cout << "Invalid move. Try again.\n";
+            std::cout << "Invalid move. Try again.\n";
             continue;
         }
 
@@ -91,13 +91,13 @@ void playGame() {
 
         if (isWin()) {
             printBoard();
-            cout << "Player " << currentPlayer << " wins!\n";
+            std::cout << "Player " << currentPlayer << " wins!\n";
             break;
         }
 
         if (isDraw()) {
             printBoard();
-            cout << "It's a draw!\n";
+            std::cout << "It's a draw!\n";
             break;
         }
 
