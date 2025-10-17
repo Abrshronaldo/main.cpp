@@ -10,6 +10,9 @@
 #include <iostream>
 
 
+
+extern "C"
+
 char board[3][3];
 char currentPlayer = 'X';
 
@@ -106,7 +109,6 @@ void playGame() {
 
 
 
-extern "C"
   JNIEXPORT jstring JNICALL
 Java_M_stringFromJNI(JNIEnv* env, jobject ,jobject data) {
 
