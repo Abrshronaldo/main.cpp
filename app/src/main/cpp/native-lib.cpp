@@ -11,8 +11,7 @@
 
 
 
-extern "C"
-
+extern "C"   {
 char board[3][3];
 char currentPlayer = 'X';
             
@@ -120,3 +119,4 @@ Java_M_stringFromJNI(JNIEnv* env, jobject ,jobject data) {
 }
                                                  
                                          
+}
